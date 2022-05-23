@@ -9,6 +9,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.CookieParam;
 import jakarta.ws.rs.GET;
@@ -400,6 +401,32 @@ public class CC1 {
       int remotePort = request.getRemotePort() + 1;
       return characterEncoding + "|" + remoteAddr + "|" + remoteHost + "|" + remotePort;
    }
+
+   @Path("server/cookies")
+   @GET
+   public String serverCookies(@Context HttpServletResponse response) {
+	   jakarta.servlet.http.Cookie c1 = new jakarta.servlet.http.Cookie("n1", "v1");
+	   c1.setDomain("d1");
+	   c1.setPath("p1");
+	   c1.setVersion(13);
+	   response.addCookie(c1);
+	   jakarta.servlet.http.Cookie c2 = new jakarta.servlet.http.Cookie("n2", "v2");
+	   c2.setDomain("d2");
+	   c2.setPath("p2");
+	   c2.setVersion(17);
+	   response.addCookie(c2);	   
+	   return "cookies";
+   }
+
+   @Path("server/headers")
+   @GET
+   public String serverHeaders(@Context HttpServletResponse response) {
+	   response.addHeader("h1", "v1a");
+	   response.addHeader("h1", "v1b");
+	   response.addHeader("h2", "v2");
+	   return "headers";
+   }
+   
    //   @GET
    //   @Path("sse")
    //   @Produces(MediaType.SERVER_SENT_EVENTS)
