@@ -3,6 +3,7 @@ package org.jboss.resteasy.example;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.concurrent.CompletableFuture;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.CookieParam;
+import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.MatrixParam;
@@ -426,7 +428,23 @@ public class CC1 {
 	   response.addHeader("h2", "v2");
 	   return "headers";
    }
-   
+
+   @Path("servletParams")
+   @POST
+   public String servletParams(@QueryParam("p1") String q1, @QueryParam("p2") String q2,
+         @FormParam("p2") String f2, @FormParam("p3") String f3,
+         @Context HttpServletRequest request) {
+      StringBuilder sb = new StringBuilder(q1 + "|" + q2 + "|" + f2 + "|" + f3 + "|");
+      for (Entry<String, String[]> entry : request.getParameterMap().entrySet()) {
+         sb.append(entry.getKey() + "->");
+         for (int i = 0; i < entry.getValue().length; i++) {
+            sb.append(entry.getValue()[i]);
+         }
+         sb.append("|");
+      }
+      return sb.toString();
+   }
+
    //   @GET
    //   @Path("sse")
    //   @Produces(MediaType.SERVER_SENT_EVENTS)
