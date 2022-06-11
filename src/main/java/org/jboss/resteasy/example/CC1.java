@@ -429,6 +429,12 @@ public class CC1 {
 	   return "headers";
    }
 
+   @Path("servletPath")
+   @GET
+   public String servletPath(@Context HttpServletRequest request) {
+      return request.getContextPath() + "|" + request.getServletPath() + "|" + request.getPathInfo() + "|" + request.getPathTranslated();
+   }
+
    @Path("servletParams")
    @POST
    public String servletParams(@QueryParam("p1") String q1, @QueryParam("p2") String q2,
