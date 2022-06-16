@@ -2,6 +2,7 @@ package org.jboss.resteasy.example;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -26,6 +27,7 @@ import jakarta.ws.rs.container.AsyncResponse;
 import jakarta.ws.rs.container.Suspended;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Cookie;
+import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
 
 @Path("p")
@@ -408,14 +410,19 @@ public class CC1 {
    @GET
    public String serverCookies(@Context HttpServletResponse response) {
 	   jakarta.servlet.http.Cookie c1 = new jakarta.servlet.http.Cookie("n1", "v1");
+	   c1.setComment("c1");
 	   c1.setDomain("d1");
 	   c1.setPath("p1");
 	   c1.setVersion(13);
 	   response.addCookie(c1);
 	   jakarta.servlet.http.Cookie c2 = new jakarta.servlet.http.Cookie("n2", "v2");
+	   c2.setComment("c2");
 	   c2.setDomain("d2");
+	   c2.setMaxAge(17);
 	   c2.setPath("p2");
 	   c2.setVersion(17);
+	   c2.setHttpOnly(true);
+	   c2.setSecure(true);
 	   response.addCookie(c2);	   
 	   return "cookies";
    }
@@ -449,6 +456,58 @@ public class CC1 {
          sb.append("|");
       }
       return sb.toString();
+   }
+
+   @Path("jaxrsResponse")
+   @GET
+   public Response jaxrsResponse() {
+      Response.ResponseBuilder response = Response.ok("jaxrsResponse");
+      NewCookie.Builder newCookieBuilder = new NewCookie.Builder("n1");
+      NewCookie newCookie = newCookieBuilder.domain("d1").path("p1").value("v1").version(7)
+            .comment("c1").maxAge(11).expiry(new Date(111111)).secure(false).httpOnly(true).build();
+      response.cookie(newCookie);
+      newCookieBuilder = new NewCookie.Builder("n2");
+      newCookie = newCookieBuilder.version(13).value("v2").path("p2").domain("d2")
+            .comment("c2").maxAge(17).expiry(new Date(222222)).secure(true).httpOnly(false).build();
+      response.cookie(newCookie);
+      response.header("h1", "v1");
+      response.status(222);
+      response.type("x/y");
+      return response.build();
+   }
+
+   @Path("servletResponse")
+   @GET
+   public Response servletResponse(@Context HttpServletResponse response) {
+      jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("n1", "v1");
+      cookie.setDomain("d1");
+      cookie.setPath("p1");
+      cookie.setValue("v1");
+      cookie.setVersion(7);
+      response.addCookie(cookie);
+      response.setContentType("x/y");
+
+      response.addDateHeader("d1", 1000 * 60 * 60 * 24 * 1);
+      response.addHeader("h1", "v1");
+      response.addIntHeader("i1", 13);
+
+      response.setDateHeader("d2", 1000 * 60 * 60 * 24 * 2);
+      response.setHeader("h2", "v2a");
+      response.setIntHeader("i2", 19);
+
+      response.addDateHeader("d2", 1000 * 60 * 60 * 24 * 3);
+      response.addHeader("h2", "v2b");
+      response.addIntHeader("i2", 29);
+
+      response.addDateHeader("d3", 1000 * 60 * 60 * 24 * 4);
+      response.addHeader("h3", "v3a");
+      response.addIntHeader("i3", 37);
+      response.setDateHeader("d3", 1000 * 60 * 60 * 24 * 5);
+      response.setHeader("h3", "v3b");
+      response.setIntHeader("i3", 41);
+
+      response.setStatus(222);
+      return Response.ok("servletResponse").status(223).build();
    }
 
    //   @GET
