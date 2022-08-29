@@ -481,6 +481,7 @@ public class CC1 {
    public Response servletResponse(@Context HttpServletResponse response) {
       jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("n1", "v1");
       cookie.setDomain("d1");
+      cookie.setMaxAge(3);
       cookie.setPath("p1");
       cookie.setValue("v1");
       cookie.setVersion(7);
