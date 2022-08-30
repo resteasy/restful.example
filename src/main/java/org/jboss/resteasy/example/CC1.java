@@ -406,6 +406,9 @@ public class CC1 {
       return characterEncoding + "|" + remoteAddr + "|" + remoteHost + "|" + remotePort;
    }
 
+   /**
+    * Clarify definition of cookies
+    */
    @Path("server/cookies")
    @GET
    public String serverCookies(@Context HttpServletResponse response) {
@@ -413,14 +416,14 @@ public class CC1 {
 	   c1.setComment("c1");
 	   c1.setDomain("d1");
 	   c1.setPath("p1");
-	   c1.setVersion(13);
+	   c1.setVersion(0);
 	   response.addCookie(c1);
 	   jakarta.servlet.http.Cookie c2 = new jakarta.servlet.http.Cookie("n2", "v2");
 	   c2.setComment("c2");
 	   c2.setDomain("d2");
 	   c2.setMaxAge(17);
 	   c2.setPath("p2");
-	   c2.setVersion(17);
+	   c2.setVersion(0);
 	   c2.setHttpOnly(true);
 	   c2.setSecure(true);
 	   response.addCookie(c2);	   
@@ -458,17 +461,20 @@ public class CC1 {
       return sb.toString();
    }
 
+   /**
+    * Clarify definition of cookies
+    */
    @Path("jaxrsResponse")
    @GET
    public Response jaxrsResponse() {
       Response.ResponseBuilder response = Response.ok("jaxrsResponse");
       NewCookie.Builder newCookieBuilder = new NewCookie.Builder("n1");
-      NewCookie newCookie = newCookieBuilder.domain("d1").path("p1").value("v1").version(7)
-            .comment("c1").maxAge(11).expiry(new Date(111111)).secure(false).httpOnly(true).build();
+      NewCookie newCookie = newCookieBuilder.domain("d1").path("p1").value("v1")
+            .maxAge(11).expiry(new Date(111111)).secure(false).httpOnly(true).build();
       response.cookie(newCookie);
       newCookieBuilder = new NewCookie.Builder("n2");
-      newCookie = newCookieBuilder.version(13).value("v2").path("p2").domain("d2")
-            .comment("c2").maxAge(17).expiry(new Date(222222)).secure(true).httpOnly(false).build();
+      newCookie = newCookieBuilder.value("v2").path("p2").domain("d2")
+            .maxAge(17).expiry(new Date(222222)).secure(true).httpOnly(false).build();
       response.cookie(newCookie);
       response.header("h1", "v1");
       response.status(222);
