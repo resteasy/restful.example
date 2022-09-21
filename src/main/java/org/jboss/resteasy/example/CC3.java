@@ -17,4 +17,8 @@ public class CC3 {
       CC3 cc3 = (CC3) other;
       return this.s.equals(cc3.s);
    }
+
+   public static class CC3_Sub {
+      String s;
+   }
 }

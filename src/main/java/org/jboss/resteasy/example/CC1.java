@@ -29,6 +29,7 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Cookie;
 import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
 
 @Path("p")
 public class CC1 {
@@ -353,7 +354,7 @@ public class CC1 {
    public CC4 referenceField(CC4 cc4) {
       CC5 newCC5 = new CC5(cc4.cc5.k + 1);
       CC4 newCC4 = new CC4("x" + cc4.s + "y", newCC5);
-      //	   CC4 newCC4 = new CC4(cc4.s + 1, newCC5);
+      //    CC4 newCC4 = new CC4(cc4.s + 1, newCC5);
       return newCC4;
    }
 
@@ -412,31 +413,31 @@ public class CC1 {
    @Path("server/cookies")
    @GET
    public String serverCookies(@Context HttpServletResponse response) {
-	   jakarta.servlet.http.Cookie c1 = new jakarta.servlet.http.Cookie("n1", "v1");
-	   c1.setComment("c1");
-	   c1.setDomain("d1");
-	   c1.setPath("p1");
-	   c1.setVersion(0);
-	   response.addCookie(c1);
-	   jakarta.servlet.http.Cookie c2 = new jakarta.servlet.http.Cookie("n2", "v2");
-	   c2.setComment("c2");
-	   c2.setDomain("d2");
-	   c2.setMaxAge(17);
-	   c2.setPath("p2");
-	   c2.setVersion(0);
-	   c2.setHttpOnly(true);
-	   c2.setSecure(true);
-	   response.addCookie(c2);	   
-	   return "cookies";
+      jakarta.servlet.http.Cookie c1 = new jakarta.servlet.http.Cookie("n1", "v1");
+      c1.setComment("c1");
+      c1.setDomain("d1");
+      c1.setPath("p1");
+      c1.setVersion(0);
+      response.addCookie(c1);
+      jakarta.servlet.http.Cookie c2 = new jakarta.servlet.http.Cookie("n2", "v2");
+      c2.setComment("c2");
+      c2.setDomain("d2");
+      c2.setMaxAge(17);
+      c2.setPath("p2");
+      c2.setVersion(0);
+      c2.setHttpOnly(true);
+      c2.setSecure(true);
+      response.addCookie(c2);    
+      return "cookies";
    }
 
    @Path("server/headers")
    @GET
    public String serverHeaders(@Context HttpServletResponse response) {
-	   response.addHeader("h1", "v1a");
-	   response.addHeader("h1", "v1b");
-	   response.addHeader("h2", "v2");
-	   return "headers";
+      response.addHeader("h1", "v1a");
+      response.addHeader("h1", "v1b");
+      response.addHeader("h2", "v2");
+      return "headers";
    }
 
    @Path("servletPath")
@@ -515,6 +516,36 @@ public class CC1 {
 
       response.setStatus(222);
       return Response.ok("servletResponse").status(223).build();
+   }
+
+   @GET
+   public String notSubresourceGet() {
+      return "notSubresourceGet";
+   }
+
+   @POST
+   public String notSubresourcePost() {
+      return "notSubresourcePost";
+   }
+
+   @Path("locator")
+   public Subresource locator(@Context UriInfo uriInfo) {
+      return new Subresource(uriInfo);
+   }
+
+   public static class Subresource {
+      private String path;
+ 
+      public Subresource() {}
+      public Subresource(UriInfo uriInfo) {
+         this.path = uriInfo.getPath();
+      }
+
+      @GET
+      @Path("method")
+      public String method() {
+         return path;
+      }
    }
 
    //   @GET
