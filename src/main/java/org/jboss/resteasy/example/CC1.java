@@ -518,6 +518,30 @@ public class CC1 {
       return Response.ok("servletResponse").status(223).build();
    }
 
+   public static class InnerClass {
+      private int i = 3;
+      private String s = "three";
+   
+      public int getI() {
+         return i;
+      }
+      public void setI(int i) {
+         this.i = i;
+      }
+      public String getS() {
+         return s;
+      }
+      public void setS(String s) {
+         this.s = s;
+      }
+   }
+
+   @Path("inner")
+   @GET
+   public InnerClass inner() {
+      return new InnerClass();
+   }
+
    @GET
    public String notSubresourceGet() {
       return "notSubresourceGet";
@@ -530,6 +554,7 @@ public class CC1 {
 
    @Path("locator")
    public Subresource locator(@Context UriInfo uriInfo) {
+	   System.out.println("entering Subresource");
       return new Subresource(uriInfo);
    }
 
@@ -542,9 +567,16 @@ public class CC1 {
       }
 
       @GET
-      @Path("method")
-      public String method() {
+      @Path("get")
+      public String get() {
          return path;
+      }
+
+      @POST
+      @Path("post/{p}")
+      public String post(@PathParam("p") String p, String entity) {
+    	  System.out.println("entity: '" + entity + "'");
+         return p + "|" + entity;
       }
    }
 
