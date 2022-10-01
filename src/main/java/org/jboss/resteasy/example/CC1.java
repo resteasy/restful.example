@@ -10,6 +10,8 @@ import java.util.SortedSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.ws.rs.Consumes;
@@ -315,20 +317,14 @@ public class CC1 {
 
    @GET
    @Path("suspend")
-   public void suspend(@Suspended final AsyncResponse response) //throws Exception
-   {
-      Thread t = new Thread()
-      {
+   public void suspend(@Suspended final AsyncResponse response) {
+      Thread t = new Thread() {
          @Override
-         public void run()
-         {
-            try
-            {
+         public void run() {
+            try {
                Response jaxrs = Response.ok("suspend").build();
                response.resume(jaxrs);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                response.resume(e);
             }
          }
@@ -337,8 +333,8 @@ public class CC1 {
    }
 
    @GET
-   @Path("context")
-   public String context(@Context HttpServletRequest request) {
+   @Path("contextPath")
+   public String contextPath(@Context HttpServletRequest request) {
       String contextPath = request.getServletContext().getContextPath();
       return contextPath;
    }
@@ -554,7 +550,6 @@ public class CC1 {
 
    @Path("locator")
    public Subresource locator(@Context UriInfo uriInfo) {
-	   System.out.println("entering Subresource");
       return new Subresource(uriInfo);
    }
 
@@ -575,11 +570,23 @@ public class CC1 {
       @POST
       @Path("post/{p}")
       public String post(@PathParam("p") String p, String entity) {
-    	  System.out.println("entity: '" + entity + "'");
+         System.out.println("entity: '" + entity + "'");
          return p + "|" + entity;
       }
    }
 
+   @Path("servletContext")
+   @GET
+   public String servletContext(@Context ServletContext servletContext) {
+      return servletContext.getInitParameter("resteasy.servlet.mapping.prefix");
+   }
+
+   @Path("servletConfig")
+   @GET
+   public String servletConfig(@Context ServletConfig servletConfig) {
+      return servletConfig.getServletName();
+   }
+   
    //   @GET
    //   @Path("sse")
    //   @Produces(MediaType.SERVER_SENT_EVENTS)
