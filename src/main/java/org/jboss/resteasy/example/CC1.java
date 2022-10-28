@@ -4,11 +4,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.jboss.resteasy.core.ResteasyContext;
 
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
@@ -29,9 +34,12 @@ import jakarta.ws.rs.container.AsyncResponse;
 import jakarta.ws.rs.container.Suspended;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Cookie;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
+import jakarta.ws.rs.sse.Sse;
+import jakarta.ws.rs.sse.SseEventSink;
 
 @Path("p")
 public class CC1 {
@@ -587,23 +595,19 @@ public class CC1 {
       return servletConfig.getServletName();
    }
    
-   //   @GET
-   //   @Path("sse")
-   //   @Produces(MediaType.SERVER_SENT_EVENTS)
-   //   public void sse(@Context SseEventSink eventSink, @Context Sse sse) {
-   //      ExecutorService executor = Executors.newFixedThreadPool(3);
-   //      executor.execute(() -> {
-   //         try (SseEventSink sink = eventSink) {
-   //            System.out.println("sending event1");
-   //            eventSink.send(sse.newEvent("event1"));
-   //            System.out.println("sent event1");
-   //            System.out.println("sending event2");
-   //            eventSink.send(sse.newEvent("event2"));
-   //            System.out.println("sent event2");
-   //            System.out.println("sending event3");
-   //            eventSink.send(sse.newEvent("event3"));
-   //            System.out.println("send event3");
-   //         }
-   //      });
-   //   }
+   @GET
+   @Path("sse")
+   @Produces(MediaType.SERVER_SENT_EVENTS)
+   public void sse(@Context SseEventSink eventSink, @Context Sse sse) {
+	   ExecutorService executor = Executors.newFixedThreadPool(3);
+	   final Map<Class<?>, Object> map = ResteasyContext.getContextDataMap();
+	   executor.execute(() -> {
+	      ResteasyContext.addCloseableContextDataLevel(map);
+		   try (SseEventSink sink = eventSink) {
+			   eventSink.send(sse.newEvent("name1", "event1"));
+			   eventSink.send(sse.newEvent("name2", "event2"));
+			   eventSink.send(sse.newEvent("name3", "event3"));
+		   }
+	   });
+   }
 }
