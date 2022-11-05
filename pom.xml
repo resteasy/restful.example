@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>jaxrs.example</groupId>
   <artifactId>jaxrs.example</artifactId>
-  <version>0.0.31</version>
+  <version>0.0.32</version>
   <packaging>war</packaging>
   
   <properties>
