@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.jboss.resteasy.core.ResteasyContext;
+import org.jboss.resteasy.plugins.providers.sse.OutboundSseEventImpl;
 
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
@@ -607,6 +608,9 @@ public class CC1 {
 			   eventSink.send(sse.newEvent("name1", "event1"));
 			   eventSink.send(sse.newEvent("name2", "event2"));
 			   eventSink.send(sse.newEvent("name3", "event3"));
+			   OutboundSseEventImpl.BuilderImpl builder = new OutboundSseEventImpl.BuilderImpl();
+			   builder.name("name4").data(new CC5(4));
+			   eventSink.send(builder.build());
 		   }
 	   });
    }
