@@ -8,6 +8,4 @@ public class CC4 {
       this.s = s;
       this.cc5 = cc5;
    }
-
-   public CC4() {}
 }

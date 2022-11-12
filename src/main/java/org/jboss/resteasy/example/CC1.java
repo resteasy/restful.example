@@ -156,6 +156,21 @@ public class CC1 {
       return s.toUpperCase();
    }
 
+   @Path("constructor")
+   @GET
+   public CC9 constructor() {
+      return new CC9(
+            true,
+            (byte) 1,
+            (short) 2,
+            3,
+            4L,
+            5.0f,
+            6.0d,
+            '7',
+            new CC3("eight"));
+   }
+
    @Path("response")
    @GET
    public Response getResponse() {

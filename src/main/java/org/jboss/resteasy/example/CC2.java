@@ -8,9 +8,7 @@ public class CC2 extends CC3 {
       super(s);
       this.j = j;
    }
-   
-   public CC2() {}
-   
+
    public boolean equals(Object other) {
       if (!CC2.class.equals(other.getClass())) {
          return false;
