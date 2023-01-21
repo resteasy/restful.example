@@ -5,6 +5,13 @@
   <version>0.0.36</version>
   <packaging>war</packaging>
   
+  <parent>
+    <groupId>org.jboss</groupId>
+    <artifactId>jboss-parent</artifactId>
+    <version>39</version>
+    <relativePath/>
+  </parent>
+  
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>11</maven.compiler.source>
@@ -13,7 +20,7 @@
   </properties>
 
   <!-- DistributionManagement -->
-  <distributionManagement>
+  <!--distributionManagement>
     <repository>
       <id>jboss-releases-repository</id>
       <name>JBoss Releases Repository</name>
@@ -24,7 +31,7 @@
       <name>JBoss Snapshots Repository</name>
       <url>https://repository.jboss.org/nexus/content/repositories/snapshots/</url>
     </snapshotRepository>
-  </distributionManagement>
+  </distributionManagement-->
 
   <dependencies>
       <dependency>
@@ -48,11 +55,12 @@
     <plugins>
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
-        <version>3.2.3</version>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
         <configuration>
           <release>11</release>
         </configuration>
@@ -60,7 +68,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.2.0</version>
         <executions>
           <execution>
             <id>attach-sources</id>
