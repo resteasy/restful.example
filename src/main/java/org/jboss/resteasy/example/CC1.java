@@ -629,4 +629,10 @@ public class CC1 {
 		   }
 	   });
    }
+
+   @GET
+   @Path("copy")
+   public String copy(String s) {
+       return s;
+   }
 }
