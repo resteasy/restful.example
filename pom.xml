@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>jakarta.rest.example</groupId>
-  <artifactId>jakarta.rest.example</artifactId>
-  <version>0.0.39</version>
+  <groupId>restful.example</groupId>
+  <artifactId>restful.example</artifactId>
+  <version>0.0.40</version>
   <packaging>war</packaging>
   
   <parent>
@@ -16,7 +16,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
-    <resteasy.version>6.2.2.Final-SNAPSHOT</resteasy.version>
+    <resteasy.version>6.3.0.Alpha1-SNAPSHOT</resteasy.version>
   </properties>
 
   <dependencies>
@@ -38,6 +38,7 @@
   </dependencies>
   
   <build>
+	<finalName>${project.artifactId}</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
