@@ -1,4 +1,4 @@
-package org.jboss.resteasy.example;
+package dev.resteasy.example;
 
 public class CC2 extends CC3 {
 
