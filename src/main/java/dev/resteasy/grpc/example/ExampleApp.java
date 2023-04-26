@@ -1,4 +1,4 @@
-package dev.resteasy.example;
+package dev.resteasy.grpc.example;
 
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
