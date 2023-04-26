@@ -1,4 +1,4 @@
-package org.jboss.resteasy.example;
+package dev.resteasy.example;
 
 import java.util.ArrayList;
 import java.util.Collections;

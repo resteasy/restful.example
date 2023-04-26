@@ -1,4 +1,4 @@
-package org.jboss.resteasy.example.sub;
+package dev.resteasy.example.sub;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
