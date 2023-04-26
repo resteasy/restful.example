@@ -1,4 +1,4 @@
-package dev.resteasy.example;
+package dev.resteasy.grpc.example;
 
 import java.util.ArrayList;
 import java.util.Collections;
